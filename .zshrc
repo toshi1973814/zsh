@@ -31,7 +31,7 @@ source $ZSH/oh-my-zsh.sh
 
 export LANG=ja_JP.UTF-8
 
-export PATH=$PATH:/opt/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
+export PATH=/usr/local/bin:$PATH:/opt/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin
 # eval "$(rbenv init -)"
 
 HISTSIZE=10000
@@ -74,7 +74,6 @@ function tree {
 find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
 }
 
-alias git_rm_all="git status | perl -nlaF'\s+' -e'$F[1] eq \"deleted:\" and print $F[2];' | xargs git rm"
 cd_coore
 
 export _CUSTOMER_EMAIL_FOR_SPEC='yasuda@coobal.co.jp'
@@ -82,11 +81,10 @@ export _CUSTOMER_EMAIL_FOR_SPEC='yasuda@coobal.co.jp'
 #source ~/.bash/git-prompt
 #PS1="\u@\h:\W\$(parse_git_branch_or_tag) $ "
 
-alias gl="git log --pretty=format:\"%h - %an, %ar : %s\" --graph"
 eval "$(rbenv init - --no-rehash)"
-alias ctags="`brew --prefix`/bin/ctags"
+#alias ctags="`brew --prefix`/bin/ctags -R --exclude=.git --exclude=log *"
+alias ctags="ctags -R --exclude=.git --exclude=log *"
 alias pbcopy="nkf -w | __CF_USER_TEXT_ENCODING=0x$(printf %x $(id -u)):0x08000100:14 pbcopy"
-alias egl="git log -n3"
 
 # https://gist.github.com/lunchub/6636906
 export RUBY_GC_MALLOC_LIMIT=60000000
@@ -95,14 +93,26 @@ alias tmux='tmux -u'
 
 export VAGRANT_LOG=debug
 
+# git related
 alias git_up="git commit -m'update coore_on_rails revision'"
+alias git_mg="git commit -m'manual merge on Gemfile.lock'"
+alias git_head="git rev-parse HEAD"
+git_branch_with_date() { for k in `git branch | perl -pe s/^..//`; do echo -e `git show --pretty=format:"%Cgreen%ci %Cblue%cr%Creset" $k -- | head -n 1`\\t$k; done | sort -r }
+alias gl="git log --pretty=format:\"%h - %an, %ar : %s\" --graph"
+alias git_rm_all="git status | perl -nlaF'\s+' -e'$F[1] eq \"deleted:\" and print $F[2];' | xargs git rm"
+#alias egl="git log -n3"
 
 export HIST_STAMPS="dd.mm.yyyy"
 #alias rsq="bin/rake resque:work QUEUE='*' &"
 #alias rsqw="bin/resque-web"
-alias git_head="git rev-parse HEAD"
 cap_depl() { cap $1 deploy -S revision=`git rev-parse HEAD`}
 cap_migr() { cap $1 deploy:migrations -S revision=`git rev-parse HEAD`}
 cap_rest() { cap $1 deploy:restart}
 
-alias mysqld="sudo /usr/local/opt/mysql/bin/mysqld_safe --bind-address=127.0.0.1 &"
+#alias mysqld="sudo /usr/local/opt/mysql/bin/mysqld_safe --bind-address=127.0.0.1 &"
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+multi_mysqld() { sudo /usr/local/Cellar/mysql/5.6.14/bin/mysqld_multi $1 --mysqld=mysqld_safe }
+# http://naleid.com/blog/2011/03/05/running-redis-as-a-user-daemon-on-osx-with-launchd
+alias redisstart='sudo launchctl start io.redis.redis-server'
+alias redisstop='sudo launchctl stop io.redis.redis-server'
+alias restart_god="bundle exec god terminate && bundle exec god && bundle exec god load config/god/development.god && bundle exec god start"
