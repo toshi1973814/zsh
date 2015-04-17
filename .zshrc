@@ -26,7 +26,7 @@ ZSH_THEME="juanghurtado"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
-plugins=(rails git)
+plugins=(rails git bundler common-aliases)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -133,6 +133,7 @@ alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 
 # mysql
 multi_mysqld() { sudo /usr/local/Cellar/mysql/5.6.14/bin/mysqld_multi $1 --mysqld=mysqld_safe }
+alias kill_mysqld="pkill -f -I mysqld"
 
 # http://naleid.com/blog/2011/03/05/running-redis-as-a-user-daemon-on-osx-with-launchd
 alias redisstart='sudo launchctl start io.redis.redis-server'
