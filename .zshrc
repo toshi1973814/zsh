@@ -107,9 +107,12 @@ git_co_ex() {
   if [ "$#" -ne 2 ]
   then
     echo "specify branch_name, database_symbol"
+    echo ""
+    cat "$(pwd)/branch_and_database_yml"
   else
     git co $1
     ln -sf "$(pwd)/config/database.$2.yml" "$(pwd)/config/database.yml"
+    echo "$1 $2" > "$(pwd)/branch_and_database_yml"
   fi
 }
 
