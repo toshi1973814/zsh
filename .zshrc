@@ -103,6 +103,7 @@ alias gl="git log --pretty=format:\"%h - %an, %ar : %s\" --graph"
 alias git_rm_all="git status | perl -nlaF'\s+' -e'$F[1] eq \"deleted:\" and print $F[2];' | xargs git rm"
 #alias egl="git log -n3"
 
+# checking out git branch and switch database setting at once
 git_co_ex() {
   if [ "$#" -ne 2 ]
   then
@@ -110,7 +111,7 @@ git_co_ex() {
     echo ""
     cat "$(pwd)/branch_and_database_yml"
   else
-    git co $1
+    git checkout $1
     ln -sf "$(pwd)/config/database.$2.yml" "$(pwd)/config/database.yml"
     echo "$1 $2" > "$(pwd)/branch_and_database_yml"
   fi
