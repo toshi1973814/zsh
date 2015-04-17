@@ -141,3 +141,11 @@ alias redisstop='sudo launchctl stop io.redis.redis-server'
 
 # god
 alias restart_god="bundle exec god terminate && bundle exec god && bundle exec god load config/god/development.god && bundle exec god start"
+
+# https://robots.thoughtbot.com/how-to-copy-and-paste-with-tmux-on-mac-os-x
+while true; do
+  if test -n "`tmux showb 2> /dev/null`"; then
+    tmux saveb -|pbcopy && tmux deleteb
+  fi
+  sleep 0.5
+done &
