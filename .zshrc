@@ -25,7 +25,8 @@ ZSH_THEME="juanghurtado"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+# plugins=(git)
+plugins=(rails git)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -93,7 +94,7 @@ alias tmux='tmux -u'
 
 export VAGRANT_LOG=debug
 
-# git related
+# git
 alias git_up="git commit -m'update coore_on_rails revision'"
 alias git_mg="git commit -m'manual merge on Gemfile.lock'"
 alias git_head="git rev-parse HEAD"
@@ -102,17 +103,34 @@ alias gl="git log --pretty=format:\"%h - %an, %ar : %s\" --graph"
 alias git_rm_all="git status | perl -nlaF'\s+' -e'$F[1] eq \"deleted:\" and print $F[2];' | xargs git rm"
 #alias egl="git log -n3"
 
+git_co_ex() {
+  if [ "$#" -ne 2 ]
+  then
+    echo "specify branch_name, database_symbol"
+  else
+    git co $1
+    ln -sf "$(pwd)/config/database.$2.yml" "$(pwd)/config/database.yml"
+  fi
+}
+
 export HIST_STAMPS="dd.mm.yyyy"
 #alias rsq="bin/rake resque:work QUEUE='*' &"
 #alias rsqw="bin/resque-web"
+
+# capistrano
 cap_depl() { cap $1 deploy -S revision=`git rev-parse HEAD`}
 cap_migr() { cap $1 deploy:migrations -S revision=`git rev-parse HEAD`}
 cap_rest() { cap $1 deploy:restart}
 
 #alias mysqld="sudo /usr/local/opt/mysql/bin/mysqld_safe --bind-address=127.0.0.1 &"
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+
+# mysql
 multi_mysqld() { sudo /usr/local/Cellar/mysql/5.6.14/bin/mysqld_multi $1 --mysqld=mysqld_safe }
+
 # http://naleid.com/blog/2011/03/05/running-redis-as-a-user-daemon-on-osx-with-launchd
 alias redisstart='sudo launchctl start io.redis.redis-server'
 alias redisstop='sudo launchctl stop io.redis.redis-server'
+
+# god
 alias restart_god="bundle exec god terminate && bundle exec god && bundle exec god load config/god/development.god && bundle exec god start"
