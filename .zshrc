@@ -107,13 +107,15 @@ alias git_rm_all="git status | perl -nlaF'\s+' -e'$F[1] eq \"deleted:\" and prin
 git_co_ex() {
   if [ "$#" -ne 2 ]
   then
-    echo "specify branch_name, database_symbol"
+    echo "specify branch_name database_symbol"
     echo ""
-    cat "$(pwd)/branch_and_database_yml"
+    cat "$(pwd)/config/database.yml.current"
   else
     git checkout $1
-    ln -sf "$(pwd)/config/database.$2.yml" "$(pwd)/config/database.yml"
-    echo "$1 $2" > "$(pwd)/branch_and_database_yml"
+    ln -sf "$(pwd)/config/database.yml.$2" "$(pwd)/config/database.yml"
+    echo "$1 $2" > "$(pwd)/config/database.yml.current"
+    echo ""
+    cat "$(pwd)/config/database.yml.current"
   fi
 }
 
