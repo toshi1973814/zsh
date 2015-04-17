@@ -67,7 +67,8 @@ export HISTTIMEFORMAT="%F %T "
 
 export PATH=/usr/local/mysql/bin:$PATH
 
-export EDITOR=/usr/bin/vim
+alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+export EDITOR=vim
 
 alias cd_coore="cd ~/work/rails_projects/coore_on_rails"
 alias tailf="tail -f"
@@ -143,9 +144,16 @@ alias redisstop='sudo launchctl stop io.redis.redis-server'
 alias restart_god="bundle exec god terminate && bundle exec god && bundle exec god load config/god/development.god && bundle exec god start"
 
 # https://robots.thoughtbot.com/how-to-copy-and-paste-with-tmux-on-mac-os-x
-while true; do
-  if test -n "`tmux showb 2> /dev/null`"; then
-    tmux saveb -|pbcopy && tmux deleteb
-  fi
-  sleep 0.5
-done &
+copy_buffer_to_osx() {
+  while true; do
+    if test -n "`tmux showb 2> /dev/null`"; then
+      tmux saveb -|pbcopy && tmux deleteb
+    fi
+    sleep 0.5
+  done &
+}
+
+# https://www-s.acm.illinois.edu/workshops/zsh/dir_stack.html
+export DIRSTACKSIZE=8
+setopt autopushd pushdminus pushdsilent pushdtohome
+alias dh='dirs -v'
