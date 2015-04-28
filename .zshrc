@@ -125,16 +125,16 @@ export HIST_STAMPS="dd.mm.yyyy"
 #alias rsqw="bin/resque-web"
 
 # capistrano
-cap_depl() { cap $1 deploy -S revision=`git rev-parse HEAD`}
-cap_migr() { cap $1 deploy:migrations -S revision=`git rev-parse HEAD`}
-cap_rest() { cap $1 deploy:restart}
+cap_depl() { cap $1 deploy -S revision=`git rev-parse HEAD` && cap $1 log:tail}
+cap_migr() { cap $1 deploy:migrations -S revision=`git rev-parse HEAD` && cap $1 log:tail}
+cap_rest() { cap $1 deploy:restart && cap $1 log:tail}
 
 #alias mysqld="sudo /usr/local/opt/mysql/bin/mysqld_safe --bind-address=127.0.0.1 &"
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
 
 # mysql
 multi_mysqld() { sudo /usr/local/Cellar/mysql/5.6.14/bin/mysqld_multi $1 --mysqld=mysqld_safe }
-alias kill_mysqld="pkill -f -I mysqld"
+alias kill_mysqld="sudo pkill -f -I mysqld"
 
 # http://naleid.com/blog/2011/03/05/running-redis-as-a-user-daemon-on-osx-with-launchd
 alias redisstart='sudo launchctl start io.redis.redis-server'
@@ -142,6 +142,7 @@ alias redisstop='sudo launchctl stop io.redis.redis-server'
 
 # god
 alias restart_god="bundle exec god terminate && bundle exec god && bundle exec god load config/god/development.god && bundle exec god start"
+alias start_god="bundle exec god && bundle exec god load config/god/development.god && bundle exec god start"
 
 # https://robots.thoughtbot.com/how-to-copy-and-paste-with-tmux-on-mac-os-x
 copy_buffer_to_osx() {
@@ -157,3 +158,5 @@ copy_buffer_to_osx() {
 export DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
 alias dh='dirs -v'
+alias ram='rake apartment:migrate'
+alias cp='cp'
