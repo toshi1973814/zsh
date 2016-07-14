@@ -123,6 +123,7 @@ alias ggr='git grep'
 alias glS='git log -S'
 alias gs='git show'
 alias gcch='git commit -CHEAD -e'
+alias glmine='glola --author=yasuda'
 
 # checking out git branch and switching database setting at once
 #git_co_ex() {
@@ -143,7 +144,9 @@ gcom() {
   if [ -z "$1" ]; then echo "branch is unset"; fi
 	gco $1
   if [ ${PWD##*/} = "coore_on_rails" ]
-    then kmy && remy
+    then kmy; remy
+  elif [ ${PWD##*/} = "hybrid_on_rails" ]
+    then kmy; remyr
     # else rdm
   fi
 }
@@ -184,6 +187,10 @@ multi_mysqld() { sudo /usr/local/Cellar/mysql/5.6.14/bin/mysqld_multi $1 }
 alias vimy="sudo vim /etc/my.cnf"
 # alias remy="sudo killall -v -m mysqld; sudo mysqld_safe &"
 alias kmy="sudo killall -v -m mysqld"
+function fetch_repository_name {
+  git config -l | perl -wnl -e'/remote\.origin\.url.*\/(.+)\.git/ and print $1'
+}
+alias remyr='sudo mysqld_safe --datadir=/usr/local/var/`fetch_repository_name`_`git name-rev --name-only HEAD` &'
 # http://stackoverflow.com/questions/16232931/bash-cached-command-result-in-alias
 alias remy='sudo mysqld_safe --datadir=/usr/local/var/`git name-rev --name-only HEAD` &'
 alias psmy="ps aux | grep mysqld"
@@ -221,3 +228,6 @@ alias cdco='cd ~/work/rails_projects/coore_on_rails'
 alias cdcl='cd ~/work/rails_projects/cloud_on_rails'
 alias cdre='cd ~/work/rails_projects/responsive_on_rails'
 alias rzsh='. ~/.zshrc'
+cdbs() {
+  cd $(bundle show "$1")
+}
