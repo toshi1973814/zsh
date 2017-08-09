@@ -75,7 +75,6 @@ export PATH=/usr/local/mysql/bin:$PATH
 # alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 export EDITOR=vim
 
-alias cd_coore="cd ~/work/rails_projects/coore_on_rails"
 alias tailf="tail -f"
 function tree {
 find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
@@ -231,3 +230,7 @@ alias rzsh='. ~/.zshrc'
 cdbs() {
   cd $(bundle show "$1")
 }
+
+MYSQL=/usr/local/mysql/bin
+export PATH=$PATH:$MYSQL
+export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
