@@ -1,12 +1,12 @@
 # Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+# ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 # ZSH_THEME="robbyrussell"
-ZSH_THEME="juanghurtado"
+# ZSH_THEME="juanghurtado"
 
 # Set to this to use case-sensitive completion
 # CASE_SENSITIVE="true"
@@ -26,13 +26,38 @@ ZSH_THEME="juanghurtado"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git)
-plugins=(rails git bundler common-aliases autojump)
+# plugins=(rails git bundler common-aliases autojump)
 
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
+
+source ~/antigen.zsh
+
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
+
+# Bundles from the default repo (robbyrussell's oh-my-zsh).
+antigen bundle git
+# antigen bundle heroku
+antigen bundle pip
+antigen bundle lein
+antigen bundle command-not-found
+antigen bundle ruby
+antigen bundle bundler
+antigen bundle common-aliases
+antigen bundle autojump
+
+# Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+# Load the theme.
+antigen theme robbyrussell
+
+# Tell Antigen that you're done.
+antigen apply
 
 export LANG=ja_JP.UTF-8
 
-export PATH=/usr/local/bin:$PATH:/opt/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Applications
+export PATH=/opt/chefdk/bin:/usr/local/bin:$PATH:/opt/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/Applications
 # eval "$(rbenv init -)"
 
 HISTSIZE=10000
@@ -47,8 +72,7 @@ function start_agent {
      chmod 600 "${SSH_ENV}"
      . "${SSH_ENV}" > /dev/null
      /usr/bin/ssh-add;
-     /usr/bin/ssh-add ~/.ssh/rsa;
-     /usr/bin/ssh-add ~/.ssh/rsa-coore-on-rails;
+     /usr/bin/ssh-add ~/.ssh/id_rsa-coore-on-rails;
 }
 
 # Source SSH settings, if applicable
@@ -88,7 +112,7 @@ export ACTIVE_ADMIN_FAVICON='favicons/active_admin_favicon_local.ico'
 #source ~/.bash/git-prompt
 #PS1="\u@\h:\W\$(parse_git_branch_or_tag) $ "
 
-eval "$(rbenv init - --no-rehash)"
+eval "$(rbenv init -)"
 #alias ctags="`brew --prefix`/bin/ctags -R --exclude=.git --exclude=log *"
 alias ctags="ctags -R --exclude=.git --exclude=log *"
 alias pbcopy="nkf -w | __CF_USER_TEXT_ENCODING=0x$(printf %x $(id -u)):0x08000100:14 pbcopy"
@@ -234,3 +258,4 @@ cdbs() {
 MYSQL=/usr/local/mysql/bin
 export PATH=$PATH:$MYSQL
 export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
+cd /Users/yasuda/work/rails_projects/coore_on_rails/
