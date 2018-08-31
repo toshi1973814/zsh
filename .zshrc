@@ -72,7 +72,6 @@ function start_agent {
      chmod 600 "${SSH_ENV}"
      . "${SSH_ENV}" > /dev/null
      /usr/bin/ssh-add;
-     /usr/bin/ssh-add ~/.ssh/id_rsa-coore-on-rails;
 }
 
 # Source SSH settings, if applicable
@@ -85,11 +84,6 @@ if [ -f "${SSH_ENV}" ]; then
      }
 else
      start_agent;
-fi
-
-if ! ps aux | grep 65001 | grep -q "git.s-rep.net"; then
-  echo "creating port fowarding connection..."
-  nohup ssh -nNT -R 172.31.27.180:65001:localhost:5990 git.s-rep.net > /dev/null 2>&1 &
 fi
 
 export HISTTIMEFORMAT="%F %T "
@@ -130,7 +124,6 @@ alias tmux='tmux -u'
 export VAGRANT_LOG=debug
 
 # git
-alias gcup="git commit -m'update coore_on_rails revision'"
 alias gitmg="git commit -m'manual merge'"
 alias grph="git rev-parse HEAD"
 git_branch_with_date() { for k in `git branch | perl -pe s/^..//`; do echo -e `git show --pretty=format:"%Cgreen%ci %Cblue%cr%Creset" $k -- | head -n 1`\\t$k; done | sort -r }
@@ -163,16 +156,6 @@ alias glmine='glola --author=yasuda'
     #cat "$(pwd)/config/database.yml.current"
   #fi
 #}
-gcom() {
-  if [ -z "$1" ]; then echo "branch is unset"; fi
-	gco $1
-  if [ ${PWD##*/} = "coore_on_rails" ]
-    then kmy; remy
-  elif [ ${PWD##*/} = "hybrid_on_rails" ]
-    then kmy; remyr
-    # else rdm
-  fi
-}
 
 gcr() {
   git commit -m"redmine #${1}" -e
@@ -244,12 +227,8 @@ alias cp='cp'
 alias krs="pkill -9 -f 'rails server'"
 alias ram='rake apartment:migrate'
 alias rar='rake apartment:rollback'
-alias buc='bundle update coore_on_rails'
 alias agr="alias | grep"
 alias hgr="history | grep"
-alias cdco='cd ~/work/rails_projects/coore_on_rails'
-alias cdcl='cd ~/work/rails_projects/cloud_on_rails'
-alias cdre='cd ~/work/rails_projects/responsive_on_rails'
 alias rzsh='. ~/.zshrc'
 cdbs() {
   cd $(bundle show "$1")
@@ -258,4 +237,3 @@ cdbs() {
 MYSQL=/usr/local/mysql/bin
 export PATH=$PATH:$MYSQL
 export DYLD_LIBRARY_PATH=/usr/local/mysql/lib:$DYLD_LIBRARY_PATH
-cd /Users/yasuda/work/rails_projects/coore_on_rails/
